@@ -386,9 +386,10 @@ class Socks5RequestHandler(StreamRequestHandler):
         client = self.connection
         client.recv(1)
         length = byte_to_int(struct.unpack('b', client.recv(1))[0])
-        username = client.recv(length)
+        username = client.recv(length).decode('utf-8')
         length = byte_to_int(struct.unpack('b', client.recv(1))[0])
-        password = client.recv(length)
+        password = client.recv(length).decode('utf-8')
+
         user_manager = self.server.get_user_manager()
         if user_manager.check(username, password):
             client.send(b"\x01\x00")
